@@ -34,12 +34,12 @@ class PokemonController extends Controller
             'name' => 'required|string|max:255',
             'species' => 'required|string|max:100',
             'primary_type' => 'required|string|max:50',
-            'weight' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/', // Untuk format decimal
-            'height' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+            'weight' => 'required|numeric|between:0,999999.99',
+            'height' => 'required|numeric|between:0,999999.99',
             'hp' => 'required|integer|max:9999',
             'attack' => 'required|integer|max:9999',
             'defense' => 'required|integer|max:9999',
-            'is_legendary' => 'required|boolean',
+            'is_legendary' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -47,7 +47,7 @@ class PokemonController extends Controller
                 'photo' => 'image|mimes:png,jpg,jpeg,gif,svg|max:2048',
             ]);
 
-            $imagePath = $request->file('photo')->store('images','storage');
+            $imagePath = $request->file('photo')->storePublicly('public/images');
 
             $validated['photo'] = $imagePath;
            }
@@ -61,11 +61,11 @@ class PokemonController extends Controller
             'hp' => $validated['hp'],
             'attack' => $validated['attack'],
             'defense' => $validated['defense'],
-            'is_legendary' => $validated['is_legendary'],
+            'is_legendary' => $request->has('is_legendary') ? true : false,
             'photo' => $validated['photo'] ?? null,
            ]);
 
-           return redirect()->route('pokemon.index')->with('succes', 'Pokemon added successfully.');
+           return redirect()->route('pokemon.index')->with('success', 'Pokemon added successfully.');
     }
 
     /**
@@ -98,7 +98,7 @@ class PokemonController extends Controller
             'hp' => 'required|integer|max:9999',
             'attack' => 'required|integer|max:9999',
             'defense' => 'required|integer|max:9999',
-            'is_legendary' => 'required|boolean',
+            'is_legendary' => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -106,10 +106,10 @@ class PokemonController extends Controller
                 'photo' => 'image|mimes:png,jpg,jpeg,gif,svg|max:2048',
             ]);
 
-            $imagePath = $request->file('photo')->store('images','storage');
+            $imagePath = $request->file('photo')->storePublicly('public/images');
 
             if ($pokemon->photo){
-                Storage::delete($pokemon->product_image);
+                Storage::delete($pokemon->photo);
             }
 
             $validated['photo'] = $imagePath;
@@ -123,10 +123,10 @@ class PokemonController extends Controller
             'hp' => $validated['hp'],
             'attack' => $validated['attack'],
             'defense' => $validated['defense'],
-            'is_legendary' => $validated['is_legendary'],
+            'is_legendary' => $request->has('is_legendary') ? true : false,
             'photo' => $validated['photo'] ?? $pokemon->photo,
         ]);
-           return redirect()->route('pokemon.index')->with('succes', 'Pokemon Update successfully.');
+           return redirect()->route('pokemon.index')->with('success', 'Pokemon Update successfully.');
     }
 
     /**
@@ -138,6 +138,6 @@ class PokemonController extends Controller
             Storage::delete($pokemon->photo);
         }
         $pokemon->delete();
-        return redirect()->route('pokemon.index')->with('succes', 'pokemon Deleted successfully!');
+        return redirect()->route('pokemon.index')->with('success', 'pokemon Deleted successfully!');
     }
 }
