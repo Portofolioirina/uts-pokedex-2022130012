@@ -21,5 +21,9 @@ class Pokemon extends Model
         'is_legendary',
         'photo'
     ];
-
+    public function getPhotoAttribute()
+    {
+        return asset('images/' . $this->attributes['photo']);
+    }
+    public $timestamps = false;
 }

@@ -2,8 +2,8 @@
 
 @section('title', 'Pokemon List')
 
-@section('body')
-<div class="mt-4 p-5 bg-black text-white rounded">
+@section('content')
+<div class="mt-1 p-5 bg-black text-white rounded">
     <h1>All Pokemon</h1>
 
     <a href="{{ route('pokemon.create') }}" class="btn btn-primary btn-sm">Create New Pokemon</a>
@@ -59,4 +59,4 @@
         {!! $pokemons->links() !!}
     </div>
 </div>
-
+@endsection
