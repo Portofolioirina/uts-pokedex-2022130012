@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pokemon;
 use Illuminate\Http\Request;
 
 class PokemonController extends Controller
@@ -11,7 +12,8 @@ class PokemonController extends Controller
      */
     public function index()
     {
-        //
+        $pokemons = Pokemon::paginate(20);
+        return view('pokemon.index', compact('pokemons'));
     }
 
     /**
@@ -19,7 +21,7 @@ class PokemonController extends Controller
      */
     public function create()
     {
-        //
+        return view('pokemon.create');
     }
 
     /**
@@ -27,7 +29,42 @@ class PokemonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'species' => 'required|string|max:100',
+            'primary_type' => 'required|string|max:50',
+            'weight' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/', // Untuk format decimal
+            'height' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/',
+            'hp' => 'required|integer|max:9999',
+            'attack' => 'required|integer|max:9999',
+            'defense' => 'required|integer|max:9999',
+            'is_legendary' => 'required|boolean',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $request->validate([
+                'photo' => 'image|mimes:png,jpg,jpeg,gif,svg|max:2048',
+            ]);
+
+            $imagePath = $request->file('photo')->store('images','storage');
+
+            $validated['photo'] = $imagePath;
+           }
+
+           Pokemon::create([
+            'name' => $validated['name'],
+            'species' => $validated['species'],
+            'primary_type' => $validated['primary_type'],
+            'weight' => $validated['weight'],
+            'height' => $validated['height'],
+            'hp' => $validated['hp'],
+            'attack' => $validated['attack'],
+            'defense' => $validated['defense'],
+            'is_legendary' => $validated['is_legendary'],
+            'photo' => $validated['photo'] ?? null,
+           ]);
+
+           return redirect()->route('pokemon.index')->with('succes', 'Pokemon added successfully.');
     }
 
     /**
