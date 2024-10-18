@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pokemon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PokemonController extends Controller
@@ -11,6 +12,12 @@ class PokemonController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        // Menggunakan middleware 'auth' untuk semua metode kecuali 'show'
+        $this->middleware('auth')->except('show');
+    }
+
     public function index()
     {
         $pokemons = Pokemon::paginate(20);
@@ -47,7 +54,7 @@ class PokemonController extends Controller
                 'photo' => 'image|mimes:png,jpg,jpeg,gif,svg|max:2048',
             ]);
 
-            $imagePath = $request->file('photo')->storePublicly('public/images');
+            $imagePath = $request->file('photo')->store('images/public');
 
             $validated['photo'] = $imagePath;
            }
@@ -106,7 +113,7 @@ class PokemonController extends Controller
                 'photo' => 'image|mimes:png,jpg,jpeg,gif,svg|max:2048',
             ]);
 
-            $imagePath = $request->file('photo')->storePublicly('public/images');
+            $imagePath = $request->file('photo')->store('images','public');
 
             if ($pokemon->photo){
                 Storage::delete($pokemon->photo);

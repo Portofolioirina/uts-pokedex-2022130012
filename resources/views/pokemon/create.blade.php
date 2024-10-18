@@ -57,12 +57,12 @@
 
         <div class="form-group">
             <label for="weight">Weight</label>
-            <input type="number" name="weight" class="form-control" id="weight" value="{{ old('weight') }}" required>
+            <input type="number" name="weight"  Step=".01" class="form-control" id="weight" value="{{ old('weight') }}" required>
         </div>
 
         <div class="form-group">
             <label for="height">Height</label>
-            <input type="number" name="height" class="form-control" id="height" value="{{ old('height') }}" required>
+            <input type="number" name="height"  Step=".01" class="form-control" id="height" value="{{ old('height') }}" required>
         </div>
 
         <div class="form-group">
@@ -81,13 +81,14 @@
         </div>
 
         <div class="form-check">
-            <label for="defense">is Legendary</label>
-            <input type="checkbox" name="is_legendary" class="form-check-input" id="is_legendary" {{ old('is_legendary') }}>
+            <label for="is_legendary" class="form-check-label">Is Legendary?</label>
+            <input type="checkbox" class="form-check-input" id="is_legendary" name="is_legendary" value="1" {{ old('is_legendary') ? 'checked' : '' }}>
         </div>
 
         <div class="form-group">
             <label for="photo">Photo</label>
-            <input type="file" class="form-control" id="photo"  name="photo">
+            <input type="file" class="form-control" id="photo"  placeholder="photo" name="photo" required value="{{ old('photo') }}">
+        </div>
         </div>
 
         <button type="submit" class="btn btn-primary">{{ isset($pokemon) ? 'Update' : 'Create' }}</button>

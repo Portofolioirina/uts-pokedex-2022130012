@@ -54,9 +54,8 @@
             @endforelse
         </tbody>
     </table>
-
-    <div class="d-flex justify-content-center">
-        {!! $pokemons->links() !!}
+    <div class="pull-right">
+        {{ $pokemons->links('pagination::bootstrap-5') }}
     </div>
 </div>
 @endsection

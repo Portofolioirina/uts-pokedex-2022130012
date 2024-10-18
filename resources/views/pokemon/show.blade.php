@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mt-5">
     @if ($pokemon->photo)
-        <img src="{{ asset($pokemon->photo_url) }}" class="rounded img-thumbnail mx-auto d-block my-3"/>
+    <img src="{{ $pokemon->photo ? Storage::url($pokemon->photo) : 'https://placehold.co/200' }}" class="card-img-top" alt="{{ $pokemon->name }}">
     @endif
 
     <table class="table table-bordered">
