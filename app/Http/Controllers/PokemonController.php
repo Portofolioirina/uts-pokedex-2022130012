@@ -14,7 +14,6 @@ class PokemonController extends Controller
      */
     public function __construct()
     {
-        // Menggunakan middleware 'auth' untuk semua metode kecuali 'show'
         $this->middleware('auth')->except('show');
     }
 
@@ -54,8 +53,7 @@ class PokemonController extends Controller
                 'photo' => 'image|mimes:png,jpg,jpeg,gif,svg|max:2048',
             ]);
 
-            $imagePath = $request->file('photo')->store('images/public');
-
+            $imagePath = $request->file('photo')->store('public');
             $validated['photo'] = $imagePath;
            }
 
@@ -113,7 +111,7 @@ class PokemonController extends Controller
                 'photo' => 'image|mimes:png,jpg,jpeg,gif,svg|max:2048',
             ]);
 
-            $imagePath = $request->file('photo')->store('images','public');
+            $imagePath = $request->file('photo')->store('public');
 
             if ($pokemon->photo){
                 Storage::delete($pokemon->photo);

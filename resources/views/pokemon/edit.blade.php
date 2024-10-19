@@ -32,7 +32,7 @@
 
         <div class="form-group">
             <label for="primary_type">Primary Type</label>
-            <select name="primary_type" class="form-select" id="primary_type" required>
+            <select name="primary_type" class="form-select" id="primary_type" value="{{ old('primary_type' , $pokemon->primary_type) }}" required>
                 <option selected>Open this select menu</option>
                 <option>Grass</option>
                 <option>Fire</option>

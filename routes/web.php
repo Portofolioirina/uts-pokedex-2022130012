@@ -16,10 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', [PokedexController::class, 'index'])->name('home');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/pokemon', [PokemonController::class, 'index'])->name('pokemon.index');
+});
+
 Route::resource('/pokedex', PokedexController::class);
 Route::resource('/pokemon', PokemonController::class);
-//Route::get('/', PokedexController::class);
-Auth::routes();
+
 
 

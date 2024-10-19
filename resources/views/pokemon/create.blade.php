@@ -91,7 +91,7 @@
         </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">{{ isset($pokemon) ? 'Update' : 'Create' }}</button>
+        <button type="submit" class="mt-3 btn btn-primary btn-block">Save</button>
     </form>
 </div>
 @endsection

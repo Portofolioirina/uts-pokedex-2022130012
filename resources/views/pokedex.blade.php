@@ -10,9 +10,11 @@
                 @foreach ($pokemons as $pokemon)
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <a href="{{ route('pokemon.show', $pokemon->id) }}">
-                                <img src="{{ $pokemon->photo ? Storage::url($pokemon->photo) : 'https://placehold.co/200' }}" class="card-img-top" alt="{{ $pokemon->name }}">
-                            </a>
+                            <div>
+                                <a href="{{ route('pokemon.show', $pokemon->id) }}">
+                                   <img src="{{ $pokemon->photo ? Storage::url(ltrim($pokemon->photo, 'storage/')) : 'https://placehold.co/200' }}" width="200" height="auto"/>
+                                </a>
+                            </div>
                             <div class="card-body">
                                 <p class="card-text">ID: {{ str_pad($pokemon->id, 4, '0', STR_PAD_LEFT) }}</p>
                                 <h5 class="card-title">
